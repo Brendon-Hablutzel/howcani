@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 license-file = "LICENSE"
 description = "A generative AI-powered CLI for getting step-by-step instructions for how to perform various tasks using the command line"
+repository = "https://github.com/Brendon-Hablutzel/howcani"
 readme = "README.md"
 
 [dependencies]
