@@ -1,0 +1,17 @@
+[package]
+name = "howcani"
+version = "0.1.0"
+edition = "2021"
+license-file = "LICENSE"
+description = "A generative AI-powered CLI for getting step-by-step instructions for how to perform various tasks using the command line"
+readme = "README.md"
+
+[dependencies]
+clap = { version = "4.5.4", features = ["derive"] }
+cohere-rust = "0.5.3"
+dirs = "5.0.1"
+futures = "0.3.30"
+serde = { version = "1.0.203", features = ["derive"] }
+sysinfo = "0.30.12"
+tokio = { version = "1.37.0", features = ["full"] }
+toml = "0.8.13"
