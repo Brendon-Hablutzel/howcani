@@ -1,6 +1,5 @@
 use clap::{Parser, Subcommand};
 use commands::{add_creds, ask, get_censored_creds, remove_creds};
-use std::error::Error;
 
 pub mod commands;
 pub mod creds;
@@ -37,7 +36,7 @@ enum CredsCommands {
 }
 
 #[tokio::main]
-async fn main() -> Result<(), Box<dyn Error>> {
+async fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
     match cli.cmd {

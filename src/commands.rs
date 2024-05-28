@@ -1,5 +1,5 @@
+use anyhow::anyhow;
 use futures::StreamExt;
-use std::error::Error;
 use std::fmt::Display;
 use std::io::Write;
 use std::str::FromStr;
@@ -34,13 +34,14 @@ where
     }
 }
 
-pub async fn ask(query: &str) -> Result<(), Box<dyn Error>> {
-    let os_name = System::long_os_version().ok_or("host OS data could not be retrieved")?;
+pub async fn ask(query: &str) -> anyhow::Result<()> {
+    let os_name =
+        System::long_os_version().ok_or(anyhow!("host OS data could not be retrieved"))?;
     let preamble = format!(include_str!("preamble.txt"), os_name);
 
-    let creds = get_creds()
-        .await?
-        .ok_or("no credentials file found, please add credentials using the appropriate command")?;
+    let creds = get_creds().await?.ok_or(anyhow!(
+        "no credentials file found, please add credentials using the appropriate command"
+    ))?;
 
     let model_config = CohereModelConfig {
         api_key: creds.cohere_api_key,
@@ -59,8 +60,10 @@ pub async fn ask(query: &str) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub async fn get_censored_creds() -> Result<(), Box<dyn Error>> {
-    let creds = creds::get_creds().await?.ok_or("no credentials found")?;
+pub async fn get_censored_creds() -> anyhow::Result<()> {
+    let creds = creds::get_creds()
+        .await?
+        .ok_or(anyhow!("no credentials found"))?;
 
     let cohere_api_key = creds.cohere_api_key;
 
@@ -81,7 +84,7 @@ pub async fn get_censored_creds() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub async fn add_creds() -> Result<(), Box<dyn Error>> {
+pub async fn add_creds() -> anyhow::Result<()> {
     let cohere_api_key: String = get_user_input("Enter your Cohere API KEY");
 
     let new_creds = Creds { cohere_api_key };
@@ -93,7 +96,7 @@ pub async fn add_creds() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub async fn remove_creds() -> Result<(), Box<dyn Error>> {
+pub async fn remove_creds() -> anyhow::Result<()> {
     creds::remove_creds().await?;
 
     println!("Credentials successfully removed");

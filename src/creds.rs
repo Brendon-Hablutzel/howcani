@@ -1,20 +1,21 @@
+use anyhow::{anyhow, bail};
 use dirs::config_dir;
 use serde::{Deserialize, Serialize};
-use std::{error::Error, path::PathBuf};
+use std::path::PathBuf;
 
-const CREDS_FILE_NAME: &'static str = "howto-cli-creds.toml";
+const CREDS_FILE_NAME: &'static str = "howcani-creds.toml";
 
 #[derive(Deserialize, Serialize)]
 pub struct Creds {
     pub cohere_api_key: String,
 }
 
-fn get_creds_file_location() -> Result<PathBuf, Box<dyn Error>> {
-    let config_dir = config_dir().ok_or("user config directory not found")?;
+fn get_creds_file_location() -> anyhow::Result<PathBuf> {
+    let config_dir = config_dir().ok_or(anyhow!("user config directory not found"))?;
     Ok(config_dir.join(CREDS_FILE_NAME))
 }
 
-pub async fn get_creds() -> Result<Option<Creds>, Box<dyn Error>> {
+pub async fn get_creds() -> anyhow::Result<Option<Creds>> {
     let creds_file = get_creds_file_location()?;
 
     if !creds_file.try_exists()? {
@@ -28,7 +29,7 @@ pub async fn get_creds() -> Result<Option<Creds>, Box<dyn Error>> {
     Ok(Some(creds))
 }
 
-pub async fn add_creds(creds: &Creds) -> Result<(), Box<dyn Error>> {
+pub async fn add_creds(creds: &Creds) -> anyhow::Result<()> {
     let creds_file = get_creds_file_location()?;
 
     let creds_str = toml::to_string_pretty(creds)?;
@@ -38,11 +39,11 @@ pub async fn add_creds(creds: &Creds) -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
-pub async fn remove_creds() -> Result<(), Box<dyn Error>> {
+pub async fn remove_creds() -> anyhow::Result<()> {
     let creds_file = get_creds_file_location()?;
 
     if !creds_file.try_exists()? {
-        return Err("no credentials found".into());
+        bail!("no credentials found");
     }
 
     tokio::fs::remove_file(&creds_file).await?;

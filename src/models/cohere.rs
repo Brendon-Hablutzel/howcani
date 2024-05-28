@@ -1,7 +1,6 @@
 use cohere_rust::api::chat::{ChatRequest, ChatStreamResponse};
 use cohere_rust::Cohere;
 use futures::{Stream, StreamExt};
-use std::error::Error;
 
 use super::GenerativeModel;
 
@@ -32,7 +31,7 @@ impl GenerativeModel for CohereModel {
         &self,
         system_prompt: &str,
         message: &str,
-    ) -> Result<impl Stream<Item = Result<String, Box<dyn Error>>>, Box<dyn Error>> {
+    ) -> anyhow::Result<impl Stream<Item = anyhow::Result<String>>> {
         let request = ChatRequest {
             message: &message,
             preamble_override: Some(system_prompt.to_owned()),
