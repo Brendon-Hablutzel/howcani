@@ -33,7 +33,7 @@ impl GenerativeModel for CohereModel {
         message: &str,
     ) -> anyhow::Result<impl Stream<Item = anyhow::Result<String>>> {
         let request = ChatRequest {
-            message: &message,
+            message,
             preamble_override: Some(system_prompt.to_owned()),
             ..Default::default()
         };

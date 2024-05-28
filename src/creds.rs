@@ -3,7 +3,7 @@ use dirs::config_dir;
 use serde::{Deserialize, Serialize};
 use std::path::PathBuf;
 
-const CREDS_FILE_NAME: &'static str = "howcani-creds.toml";
+const CREDS_FILE_NAME: &str = "howcani-creds.toml";
 
 #[derive(Deserialize, Serialize)]
 pub struct Creds {
