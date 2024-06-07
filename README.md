@@ -12,7 +12,7 @@ Then, to get instructions for some task, simply run `howcani do "some task"`
 
 Example:
 
-![Demo Image](assets/demo.png)
+![Demo Image](https://raw.githubusercontent.com/Brendon-Hablutzel/howcani/main/assets/demo.png)
 
 ## Credentials
 
