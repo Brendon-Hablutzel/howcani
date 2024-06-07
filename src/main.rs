@@ -16,7 +16,7 @@ struct Cli {
 #[derive(Subcommand, Debug)]
 enum Subcommands {
     /// Get instructions for how to perform a task
-    Ask {
+    Do {
         /// The task to get instructions for
         query: String,
     },
@@ -40,7 +40,7 @@ async fn main() -> anyhow::Result<()> {
     let cli = Cli::parse();
 
     match cli.cmd {
-        Subcommands::Ask { query } => ask(&query).await,
+        Subcommands::Do { query } => ask(&query).await,
         Subcommands::Creds(creds_cmd) => match creds_cmd {
             CredsCommands::Get => get_censored_creds().await,
             CredsCommands::Add => add_creds().await,
